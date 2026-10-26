@@ -1,0 +1,196 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "edcd59e1fe8dca0050e1",
+  "position": {
+    "x": 850.6,
+    "y": 156,
+    "z": 14000,
+    "height": 494,
+    "width": 389.3,
+    "tabOrder": 14000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "3 · What the data says",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "14pt",
+                      "color": "#5FD08F",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  American Eagle logs 10.5 complaints per 1,000 passengers; United 4.7, Hawaiian 2.7.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  The fleet rate peaked in 2006 (7.4) and fell to 4.1 by 2010. The worst month of every year is December or January.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Business class is 70% satisfied, Economy 19%. Business trips 59%, personal trips 10%.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  A delay of an hour or more costs about 12 points, far less than class or trip purpose.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  The 10 busiest routes carry only 1.5% of flight records: a broad network, not a few corridors.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Limits: the on-time extract is undated, the survey has no airline field, baggage covers three airlines. Findings are descriptive, not causal.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#25282B'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "35D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

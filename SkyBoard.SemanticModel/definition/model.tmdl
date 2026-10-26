@@ -1,0 +1,28 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["DimDate","DimAirport","DimAirline","FactRoute","FactBaggage","FactSurvey","FactRatings","DataFolder"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table DimDate
+ref table DimAirport
+ref table DimAirline
+ref table FactRoute
+ref table FactBaggage
+ref table FactSurvey
+ref table FactRatings
+ref table MetricSelector
+ref table TopSelector
+ref table Metrics
+
+ref cultureInfo en-US
+

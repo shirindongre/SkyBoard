@@ -1,0 +1,15 @@
+table TopSelector
+	lineageTag: a4f0e93a-0ac7-5a95-b0e2-5e6e8b8c0f46
+
+	column 'Show Top'
+		dataType: int64
+		lineageTag: 353f7788-ef40-58a2-bc0c-ebc992f661b9
+		summarizeBy: none
+		sourceColumn: [Value]
+
+	partition TopSelector = calculated
+		mode: import
+		source = GENERATESERIES(5, 25, 5)
+
+	annotation PBI_Id = 4c20ed992d2453eeb1e63d690979c69e
+

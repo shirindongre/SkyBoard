@@ -1,0 +1,56 @@
+table FactRoute
+	lineageTag: b092d3cc-5c56-5c10-929e-49f7b3395a8d
+
+	column OriginID
+		dataType: int64
+		isHidden
+		lineageTag: 6ffb90d3-fcb1-5cf6-a016-cdf2d07527fe
+		summarizeBy: none
+		sourceColumn: OriginID
+
+	column DestID
+		dataType: int64
+		isHidden
+		lineageTag: 1d8beb24-db3e-5530-abba-ea99b446dedf
+		summarizeBy: none
+		sourceColumn: DestID
+
+	column Flights
+		dataType: int64
+		isHidden
+		formatString: #,0
+		lineageTag: eec0326f-d173-554a-a509-9b92d20918c2
+		summarizeBy: none
+		sourceColumn: Flights
+
+	column PairLabel
+		dataType: string
+		lineageTag: ee821bf6-5872-5c93-88dd-661fb1a96685
+		summarizeBy: none
+		sourceColumn: PairLabel
+
+	column RouteLabel
+		dataType: string
+		lineageTag: fdcc2803-afd0-5b67-a180-ad2cb7f77956
+		summarizeBy: none
+		sourceColumn: RouteLabel
+
+	column HasReturn
+		dataType: int64
+		isHidden
+		lineageTag: fd46e74a-83d6-5d4a-a5d6-4409d436cd7d
+		summarizeBy: none
+		sourceColumn: HasReturn
+
+	partition FactRoute = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "\fact_route.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumns(Promoted, {{"OriginID", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"DestID", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"Flights", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"PairLabel", each if _ = null or _ = "" then null else Text.From(_), type text}, {"RouteLabel", each if _ = null or _ = "" then null else Text.From(_), type text}, {"HasReturn", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}})
+				in
+					Typed
+
+	annotation PBI_ResultType = Table
+

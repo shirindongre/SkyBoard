@@ -1,0 +1,676 @@
+table Metrics
+	lineageTag: a80c0e15-0ea1-5197-8708-dd17417de181
+
+	/// Flight records in the on-time extract (one record = one reported flight; the extract is undated).
+	measure 'Flight Records' = SUM ( FactRoute[Flights] )
+		formatString: #,0
+		displayFolder: 1 Network
+		lineageTag: f64f7adf-4331-5da7-99b8-3a43634a386d
+
+	/// Flights leaving the airport(s) in context (the ACTIVE relationship is the origin).
+	measure Departures = [Flight Records]
+		formatString: #,0
+		displayFolder: 1 Network
+		lineageTag: acb7337b-d078-5269-9bef-836a26893ca0
+
+	/// Flights landing at the airport(s) in context: the INACTIVE destination relationship is switched on with USERELATIONSHIP.
+	measure Arrivals = CALCULATE ( [Flight Records], USERELATIONSHIP ( FactRoute[DestID], DimAirport[AirportID] ) )
+		formatString: #,0
+		displayFolder: 1 Network
+		lineageTag: fa7961ea-9109-564e-a957-e32733e1044e
+
+	/// Departures + arrivals. Only meaningful per airport or region (a flight is both a departure and an arrival).
+	measure 'Airport Traffic' = [Departures] + [Arrivals]
+		formatString: #,0
+		displayFolder: 1 Network
+		lineageTag: 4ffc84e7-0b74-51d2-a1e4-e84f323262f6
+
+	/// Positive = net importer of flights, negative = net exporter.
+	measure 'Net Flow' = [Arrivals] - [Departures]
+		formatString: +#,0;-#,0;0
+		displayFolder: 1 Network
+		lineageTag: 8dc70cc7-dbb9-5c9a-af78-0f9a18a3cf50
+
+	/// Directed origin-to-destination routes.
+	measure Routes = COUNTROWS ( FactRoute )
+		formatString: #,0
+		displayFolder: 1 Network
+		lineageTag: e893f25c-112c-504f-9520-84529fec9387
+
+	/// Undirected airport pairs (ORD-LGA and LGA-ORD count once).
+	measure 'Airport Pairs' = DISTINCTCOUNT ( FactRoute[PairLabel] )
+		formatString: #,0
+		displayFolder: 1 Network
+		lineageTag: 010fe96b-ba80-5b67-a976-5b77a5caa836
+
+	/// Airports with at least one flight in the current selection.
+	measure 'Airports Active' = COUNTROWS ( FILTER ( DimAirport, [Airport Traffic] > 0 ) )
+		formatString: #,0
+		displayFolder: 1 Network
+		lineageTag: d9244579-5b31-5897-83e6-d153d1db8392
+
+	/// Share of routes that also operate in the opposite direction.
+	measure 'Two-way Route Share' =
+			DIVIDE (
+			    CALCULATE ( COUNTROWS ( FactRoute ), FactRoute[HasReturn] = 1 ),
+			    [Routes]
+			)
+		formatString: 0.0%
+		displayFolder: 1 Network
+		lineageTag: 0a676b3d-e234-5e46-a165-86ae98a53b39
+
+	measure 'Avg Flights per Route' = DIVIDE ( [Flight Records], [Routes] )
+		formatString: #,0.0
+		displayFolder: 1 Network
+		lineageTag: 362aeef1-682d-54ad-bfd4-704d59c61c15
+
+	/// Rank of the airport by traffic inside the current selection.
+	measure 'Hub Rank' =
+			IF (
+			    HASONEVALUE ( DimAirport[AirportLabel] ),
+			    RANKX ( ALLSELECTED ( DimAirport[AirportLabel] ), [Airport Traffic], , DESC, DENSE )
+			)
+		formatString: 0
+		displayFolder: 1 Network
+		lineageTag: fdded954-27f0-56f1-a0c4-65fdde78d57f
+
+	/// Airport's share of all traffic in the current selection.
+	measure 'Traffic Share' =
+			DIVIDE (
+			    [Airport Traffic],
+			    CALCULATE ( [Airport Traffic], ALLSELECTED ( DimAirport ) )
+			)
+		formatString: 0.0%
+		displayFolder: 1 Network
+		lineageTag: 2d31286b-0bca-5098-a023-a8f014432a1a
+
+	/// Blank outside the Top N chosen with the TopN slicer, so a bar chart shows only the leaders.
+	measure 'Traffic (Top N Airports)' =
+			VAR N = [Top N Value]
+			RETURN
+			    IF ( [Hub Rank] <= N, [Airport Traffic] )
+		formatString: #,0
+		displayFolder: 1 Network
+		lineageTag: e5e4fbb5-8f33-5cbf-a484-28898d432a61
+
+	/// Same idea for routes. Ties share a rank, so a few ties can show slightly more than N bars.
+	measure 'Flights (Top N Routes)' =
+			VAR N = [Top N Value]
+			VAR Rnk =
+			    IF (
+			        HASONEVALUE ( FactRoute[RouteLabel] ),
+			        RANKX ( ALLSELECTED ( FactRoute[RouteLabel] ), [Flight Records], , DESC, SKIP )
+			    )
+			RETURN
+			    IF ( Rnk <= N, [Flight Records] )
+		formatString: #,0
+		displayFolder: 1 Network
+		lineageTag: 5dcc450c-5aea-5bf7-b80f-6bcae49ad94c
+
+	/// How concentrated the network is: share of flight records on the ten busiest routes.
+	measure 'Top 10 Routes Share' =
+			DIVIDE (
+			    SUMX ( TOPN ( 10, ALLSELECTED ( FactRoute[RouteLabel] ), [Flight Records], DESC ), [Flight Records] ),
+			    CALCULATE ( [Flight Records], ALLSELECTED ( FactRoute ) )
+			)
+		formatString: 0.0%
+		displayFolder: 1 Network
+		lineageTag: 6eb9a6d7-155c-545a-ba0d-48d52cb6da44
+
+	measure 'Busiest Airport' =
+			MAXX (
+			    TOPN ( 1, ALLSELECTED ( DimAirport[AirportLabel] ), [Airport Traffic], DESC ),
+			    DimAirport[AirportLabel]
+			)
+		displayFolder: 1 Network
+		lineageTag: 88681cc6-07b8-5362-b8e7-619dfcd979c8
+
+	measure 'Busiest Route' =
+			MAXX (
+			    TOPN ( 1, ALLSELECTED ( FactRoute[RouteLabel] ), [Flight Records], DESC ),
+			    FactRoute[RouteLabel]
+			)
+		displayFolder: 1 Network
+		lineageTag: 60ab78e8-dc75-5f63-9ee1-38e0fd14dfab
+
+	measure 'Baggage Complaints' = SUM ( FactBaggage[Complaints] )
+		formatString: #,0
+		displayFolder: 2 Baggage - base
+		lineageTag: 10f31d13-b516-542a-b7ef-2605e37d65b0
+
+	measure 'Passengers Enplaned' = SUM ( FactBaggage[Passengers] )
+		formatString: #,0
+		displayFolder: 2 Baggage - base
+		lineageTag: 63bfdcec-d7c1-5285-a1d0-46ebe1a63538
+
+	measure 'Scheduled Flights' = SUM ( FactBaggage[ScheduledFlights] )
+		formatString: #,0
+		displayFolder: 2 Baggage - base
+		lineageTag: 6ed09bed-99d8-572a-9673-fd73d728c747
+
+	measure 'Cancelled Flights' = SUM ( FactBaggage[CancelledFlights] )
+		formatString: #,0
+		displayFolder: 2 Baggage - base
+		lineageTag: 5a05428a-92e7-51bd-9c82-6640817b9698
+
+	measure 'Operated Flights' = [Scheduled Flights] - [Cancelled Flights]
+		formatString: #,0
+		displayFolder: 2 Baggage - base
+		lineageTag: 805f05f0-ee1f-5c43-9bff-5b287ba4b2f3
+
+	/// A rate, so it is always computed from the two totals and never averaged.
+	measure 'Complaints per 1K Passengers' = DIVIDE ( [Baggage Complaints], [Passengers Enplaned] ) * 1000
+		formatString: 0.00
+		displayFolder: 2 Baggage - base
+		lineageTag: 32c2d389-c31a-59aa-bd65-81c11d9f44d9
+
+	measure 'Complaints per 100 Flights' = DIVIDE ( [Baggage Complaints], [Operated Flights] ) * 100
+		formatString: 0.0
+		displayFolder: 2 Baggage - base
+		lineageTag: 1d03ecb3-1ec3-56cf-a13d-f9cfd06bf87c
+
+	measure 'Cancellation Rate' = DIVIDE ( [Cancelled Flights], [Scheduled Flights] )
+		formatString: 0.0%
+		displayFolder: 2 Baggage - base
+		lineageTag: 002f921a-1e36-59fd-880b-348b430bc709
+
+	measure 'Cancellations per 100 Flights' = [Cancellation Rate] * 100
+		formatString: 0.00
+		displayFolder: 2 Baggage - base
+		lineageTag: c57dfc0f-74e8-5ff1-b726-b1fcd21228c9
+
+	measure 'Passengers per Flight' = DIVIDE ( [Passengers Enplaned], [Operated Flights] )
+		formatString: #,0.0
+		displayFolder: 2 Baggage - base
+		lineageTag: 2cc90c61-9148-55ca-a233-1669d6737b92
+
+	measure 'Complaint Share' = DIVIDE ( [Baggage Complaints], CALCULATE ( [Baggage Complaints], ALLSELECTED ( DimAirline ) ) )
+		formatString: 0.0%
+		displayFolder: 2 Baggage - base
+		lineageTag: dd611e44-ff39-5881-a846-f7ce12c7275e
+
+	measure 'Passenger Share' = DIVIDE ( [Passengers Enplaned], CALCULATE ( [Passengers Enplaned], ALLSELECTED ( DimAirline ) ) )
+		formatString: 0.0%
+		displayFolder: 2 Baggage - base
+		lineageTag: 373356fd-6f92-5317-8d63-66dcf2017377
+
+	measure 'Complaints PY' = CALCULATE ( [Baggage Complaints], SAMEPERIODLASTYEAR ( DimDate[Date] ) )
+		formatString: #,0
+		displayFolder: 3 Baggage - time intelligence
+		lineageTag: ab18154a-d3dc-582b-a08a-f8c144b9e25f
+
+	measure 'Complaints YoY %' = DIVIDE ( [Baggage Complaints] - [Complaints PY], [Complaints PY] )
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 3 Baggage - time intelligence
+		lineageTag: f250ff25-b139-5782-9e09-41c5773d5fb9
+
+	/// Feeds the waterfall. For the first year there is no prior year, so the bar is the opening level.
+	measure 'Complaints Change vs PY' = [Baggage Complaints] - [Complaints PY]
+		formatString: +#,0;-#,0;0
+		displayFolder: 3 Baggage - time intelligence
+		lineageTag: e4eb3a65-af07-5e39-86f6-d4f45021e968
+
+	measure 'Rate PY' = CALCULATE ( [Complaints per 1K Passengers], SAMEPERIODLASTYEAR ( DimDate[Date] ) )
+		formatString: 0.00
+		displayFolder: 3 Baggage - time intelligence
+		lineageTag: 72e9622a-364c-5c6f-86e6-2cb6586e11d0
+
+	measure 'Rate YoY Change' =
+			IF (
+			    ISBLANK ( [Rate PY] ),
+			    BLANK (),
+			    [Complaints per 1K Passengers] - [Rate PY]
+			)
+		formatString: +0.00;-0.00;0.00
+		displayFolder: 3 Baggage - time intelligence
+		lineageTag: cb69f259-aa39-535d-b7af-f6f03f3b4ee9
+
+	measure 'Complaints YTD' = TOTALYTD ( [Baggage Complaints], DimDate[Date] )
+		formatString: #,0
+		displayFolder: 3 Baggage - time intelligence
+		lineageTag: 4b2ab666-2aa4-5069-bf86-1df3b2e65168
+
+	measure 'Rolling 12M Complaints' =
+			CALCULATE (
+			    [Baggage Complaints],
+			    DATESINPERIOD ( DimDate[Date], MAX ( DimDate[Date] ), -12, MONTH )
+			)
+		formatString: #,0
+		displayFolder: 3 Baggage - time intelligence
+		lineageTag: b5a946f6-2d6e-5121-9ad0-06cc6231ee32
+
+	/// Smooths the strong seasonality so the real trend is visible.
+	measure 'Rolling 12M Rate' =
+			CALCULATE (
+			    [Complaints per 1K Passengers],
+			    DATESINPERIOD ( DimDate[Date], MAX ( DimDate[Date] ), -12, MONTH )
+			)
+		formatString: 0.00
+		displayFolder: 3 Baggage - time intelligence
+		lineageTag: cf174f8d-6a44-5638-ace6-e2c212389527
+
+	measure '3M Moving Avg Rate' =
+			CALCULATE (
+			    [Complaints per 1K Passengers],
+			    DATESINPERIOD ( DimDate[Date], MAX ( DimDate[Date] ), -3, MONTH )
+			)
+		formatString: 0.00
+		displayFolder: 3 Baggage - time intelligence
+		lineageTag: 64969ec7-ebbf-59f4-bcfa-3462a4d558b1
+
+	/// Gap to the combined rate of the airlines currently selected.
+	measure 'Rate vs Fleet Average' =
+			[Complaints per 1K Passengers]
+			    - CALCULATE ( [Complaints per 1K Passengers], ALLSELECTED ( DimAirline ) )
+		formatString: +0.00;-0.00;0.00
+		displayFolder: 4 Baggage - analysis
+		lineageTag: 729f815c-66ce-5207-83ba-f46227f59f34
+
+	measure 'Airline Rank' =
+			IF (
+			    HASONEVALUE ( DimAirline[Airline] ),
+			    RANKX ( ALLSELECTED ( DimAirline[Airline] ), [Complaints per 1K Passengers], , ASC, DENSE )
+			)
+		formatString: 0
+		displayFolder: 4 Baggage - analysis
+		lineageTag: 1f42efd6-6078-5c15-9989-3fbb21b40e55
+
+	measure 'Worst Month' =
+			MAXX (
+			    TOPN (
+			        1,
+			        FILTER ( ALLSELECTED ( DimDate[YearMonth] ), NOT ISBLANK ( [Baggage Complaints] ) ),
+			        [Complaints per 1K Passengers], DESC
+			    ),
+			    DimDate[YearMonth]
+			)
+		displayFolder: 4 Baggage - analysis
+		lineageTag: 322d2cd6-d887-5ff7-8942-8eb2f45f9d82
+
+	measure 'Best Month' =
+			MAXX (
+			    TOPN (
+			        1,
+			        FILTER ( ALLSELECTED ( DimDate[YearMonth] ), NOT ISBLANK ( [Baggage Complaints] ) ),
+			        [Complaints per 1K Passengers], ASC
+			    ),
+			    DimDate[YearMonth]
+			)
+		displayFolder: 4 Baggage - analysis
+		lineageTag: e7ace05a-0b96-5a9d-a93a-c9e25f16cb86
+
+	measure 'Peak Monthly Rate' = MAXX ( ALLSELECTED ( DimDate[YearMonth] ), [Complaints per 1K Passengers] )
+		formatString: 0.00
+		displayFolder: 4 Baggage - analysis
+		lineageTag: f0113658-6ba6-5abe-8147-63068131f9c2
+
+	measure 'Lowest Monthly Rate' = MINX ( ALLSELECTED ( DimDate[YearMonth] ), [Complaints per 1K Passengers] )
+		formatString: 0.00
+		displayFolder: 4 Baggage - analysis
+		lineageTag: df129737-3a0f-5098-bd6c-553baf85478f
+
+	measure Respondents = COUNTROWS ( FactSurvey )
+		formatString: #,0
+		displayFolder: 5 Passengers - base
+		lineageTag: 1d7a85c2-5188-5beb-8dbc-926b25c17034
+
+	measure 'Satisfied Passengers' = CALCULATE ( COUNTROWS ( FactSurvey ), FactSurvey[Satisfied] = 1 )
+		formatString: #,0
+		displayFolder: 5 Passengers - base
+		lineageTag: 17411341-5ce7-5944-8d69-a70da7ab5ad5
+
+	measure 'Satisfaction Rate' = DIVIDE ( [Satisfied Passengers], [Respondents] )
+		formatString: 0.0%
+		displayFolder: 5 Passengers - base
+		lineageTag: 020d6105-3159-52c1-98cf-ecdf35c5ef64
+
+	/// Baseline: every respondent, ignoring slicers. Used as the gauge target.
+	measure 'Overall Satisfaction Rate' = CALCULATE ( [Satisfaction Rate], REMOVEFILTERS ( FactSurvey ) )
+		formatString: 0.0%
+		displayFolder: 5 Passengers - base
+		lineageTag: a070a3f3-b906-5226-ae4e-208e5ed0eafa
+
+	measure 'Satisfaction vs Overall' = [Satisfaction Rate] - [Overall Satisfaction Rate]
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 5 Passengers - base
+		lineageTag: c70c2d45-f4e0-57b7-ad45-1ccc0c925971
+
+	/// Mean of the 14 service ratings per passenger (N/A answers excluded), then averaged.
+	measure 'Avg Service Score' = AVERAGE ( FactSurvey[ServiceScore] )
+		formatString: 0.00
+		displayFolder: 5 Passengers - base
+		lineageTag: cefada78-a0d2-5cc1-8535-a16feea8e0fc
+
+	measure 'Avg Rating' = AVERAGE ( FactRatings[Rating] )
+		formatString: 0.00
+		displayFolder: 5 Passengers - base
+		lineageTag: f3ffdc00-587f-545c-8eef-fa5279bbb5df
+
+	measure 'Avg Departure Delay' = AVERAGE ( FactSurvey[DepartureDelay] )
+		formatString: 0.0
+		displayFolder: 5 Passengers - base
+		lineageTag: 2402178f-6376-5c26-bafd-225b46999231
+
+	measure 'Avg Arrival Delay' = AVERAGE ( FactSurvey[ArrivalDelay] )
+		formatString: 0.0
+		displayFolder: 5 Passengers - base
+		lineageTag: 0ec5d438-cafe-542d-99c0-9b60b451492e
+
+	measure 'Delayed 15+ Share' = DIVIDE ( CALCULATE ( COUNTROWS ( FactSurvey ), FactSurvey[ArrivalDelay] >= 15 ), [Respondents] )
+		formatString: 0.0%
+		displayFolder: 5 Passengers - base
+		lineageTag: 872270d2-ee3b-5c0a-9460-4c3fa45e32a4
+
+	measure 'On-time Share' = DIVIDE ( CALCULATE ( COUNTROWS ( FactSurvey ), FactSurvey[DelayBand] = "On time" ), [Respondents] )
+		formatString: 0.0%
+		displayFolder: 5 Passengers - base
+		lineageTag: 571730e8-64df-520b-bc23-1529539855fa
+
+	measure 'Business Traveller Share' = DIVIDE ( CALCULATE ( COUNTROWS ( FactSurvey ), FactSurvey[TravelType] = "Business" ), [Respondents] )
+		formatString: 0.0%
+		displayFolder: 5 Passengers - base
+		lineageTag: c2966645-17b5-510a-bb14-5ceca6974497
+
+	measure 'Loyal Share' = DIVIDE ( CALCULATE ( COUNTROWS ( FactSurvey ), FactSurvey[CustomerType] = "Loyal" ), [Respondents] )
+		formatString: 0.0%
+		displayFolder: 5 Passengers - base
+		lineageTag: d68ebe46-f3a4-5f79-81b0-74306da30099
+
+	/// Data-quality transparency: arrival delays filled from departure delay (83 respondents).
+	measure 'Imputed Arrival Delays' = SUM ( FactSurvey[ArrivalDelayImputed] )
+		formatString: #,0
+		displayFolder: 5 Passengers - base
+		lineageTag: 9558f3d5-31d2-5079-8949-16393a77021f
+
+	measure 'Satisfaction On-time' = CALCULATE ( [Satisfaction Rate], FactSurvey[DelayBand] = "On time" )
+		formatString: 0.0%
+		displayFolder: 6 Passengers - analysis
+		lineageTag: 7301ab69-10a0-5c60-886e-e10912da3cc1
+
+	measure 'Satisfaction Delayed 60+' = CALCULATE ( [Satisfaction Rate], FactSurvey[DelayBand] IN { "60-179 min", "180+ min" } )
+		formatString: 0.0%
+		displayFolder: 6 Passengers - analysis
+		lineageTag: 776eec1a-657d-5d19-8e80-80395f68824f
+
+	/// How many points of satisfaction a long delay costs. Small next to the class and trip-purpose gaps.
+	measure 'Delay Penalty' = [Satisfaction On-time] - [Satisfaction Delayed 60+]
+		formatString: 0.0%
+		displayFolder: 6 Passengers - analysis
+		lineageTag: 52ecac7d-dae8-5722-a4a9-8223a6581984
+
+	/// Business-class satisfaction minus Economy satisfaction.
+	measure 'Class Gap' =
+			CALCULATE ( [Satisfaction Rate], REMOVEFILTERS ( FactSurvey[TravelClass] ), FactSurvey[TravelClass] = "Business" )
+			    - CALCULATE ( [Satisfaction Rate], REMOVEFILTERS ( FactSurvey[TravelClass] ), FactSurvey[TravelClass] = "Economy" )
+		formatString: 0.0%
+		displayFolder: 6 Passengers - analysis
+		lineageTag: bc957f25-ed70-5b17-ae2f-b4dd960d5162
+
+	/// Per factor: how much higher satisfied passengers score it than unhappy ones.
+	measure 'Rating Gap' =
+			CALCULATE ( AVERAGE ( FactRatings[Rating] ), FactSurvey[Satisfied] = 1 )
+			    - CALCULATE ( AVERAGE ( FactRatings[Rating] ), FactSurvey[Satisfied] = 0 )
+		formatString: +0.00;-0.00;0.00
+		displayFolder: 6 Passengers - analysis
+		lineageTag: 46bf270e-bf4d-5a62-81c0-20caa4fa7a47
+
+	measure 'Low Rating Share' = DIVIDE ( CALCULATE ( COUNTROWS ( FactRatings ), FactRatings[Rating] <= 2 ), COUNTROWS ( FactRatings ) )
+		formatString: 0.0%
+		displayFolder: 6 Passengers - analysis
+		lineageTag: b5811aac-b2af-5ef2-8914-821c82b68426
+
+	measure 'Weakest Factor' = MAXX ( TOPN ( 1, ALLSELECTED ( FactRatings[Factor] ), [Avg Rating], ASC ), FactRatings[Factor] )
+		displayFolder: 6 Passengers - analysis
+		lineageTag: 80b48e01-a01c-51b5-8049-3b02065bb604
+
+	measure 'Strongest Factor' = MAXX ( TOPN ( 1, ALLSELECTED ( FactRatings[Factor] ), [Avg Rating], DESC ), FactRatings[Factor] )
+		displayFolder: 6 Passengers - analysis
+		lineageTag: 7b9fa817-9f3b-5a1a-87cd-6df6071c80fa
+
+	/// The factor with the widest rating gap between satisfied and unhappy passengers.
+	measure 'Biggest Separator' = MAXX ( TOPN ( 1, ALLSELECTED ( FactRatings[Factor] ), [Rating Gap], DESC ), FactRatings[Factor] )
+		displayFolder: 6 Passengers - analysis
+		lineageTag: d466c8fd-f8d3-5ab8-a87f-8e37076356f4
+
+	/// Compares the last year in the current selection with the year before it (the year slicer is ignored for the prior year).
+	measure 'Latest Year Complaints Change' =
+			VAR LastYear = MAX ( DimDate[Year] )
+			VAR Cur  = CALCULATE ( [Baggage Complaints], REMOVEFILTERS ( DimDate ), DimDate[Year] = LastYear )
+			VAR Prev = CALCULATE ( [Baggage Complaints], REMOVEFILTERS ( DimDate ), DimDate[Year] = LastYear - 1 )
+			RETURN
+			    IF (
+			        ISBLANK ( Prev ) || ISBLANK ( Cur ),
+			        "no prior year in data",
+			        IF ( Cur < Prev, "▼ ", "▲ " ) & FORMAT ( ABS ( DIVIDE ( Cur - Prev, Prev ) ), "0.0%" )
+			            & " complaints in " & LastYear & " vs " & ( LastYear - 1 )
+			    )
+		displayFolder: 7 Dynamic insights
+		lineageTag: b0024076-922d-5eef-8493-09168a026c17
+
+	/// Rate change for the last year in view versus the year before.
+	measure 'Latest Year Change' =
+			VAR LastYear = MAX ( DimDate[Year] )
+			VAR Cur  = CALCULATE ( [Complaints per 1K Passengers], REMOVEFILTERS ( DimDate ), DimDate[Year] = LastYear )
+			VAR Prev = CALCULATE ( [Complaints per 1K Passengers], REMOVEFILTERS ( DimDate ), DimDate[Year] = LastYear - 1 )
+			RETURN
+			    IF (
+			        ISBLANK ( Prev ) || ISBLANK ( Cur ),
+			        "no prior year in data",
+			        IF ( Cur < Prev, "▼ ", "▲ " ) & FORMAT ( ABS ( Cur - Prev ), "0.00" )
+			            & " per 1K in " & LastYear & " vs " & ( LastYear - 1 )
+			    )
+		displayFolder: 7 Dynamic insights
+		lineageTag: 2a4e2905-a9e6-599f-a30c-dda0369f026a
+
+	measure 'Network Insight' =
+			VAR TopAirport = TOPN ( 1, ALLSELECTED ( DimAirport[AirportLabel] ), [Airport Traffic], DESC )
+			VAR TopShare =
+			    DIVIDE (
+			        CALCULATE ( [Airport Traffic], TopAirport ),
+			        CALCULATE ( [Airport Traffic], ALLSELECTED ( DimAirport ) )
+			    )
+			RETURN
+			    [Busiest Airport] & " carries " & FORMAT ( TopShare, "0.0%" ) & " of traffic  ·  busiest route "
+			        & [Busiest Route] & "  ·  top 10 routes = " & FORMAT ( [Top 10 Routes Share], "0.0%" ) & " of flights"
+		displayFolder: 7 Dynamic insights
+		lineageTag: c1ba1cb1-07c1-5c74-a37e-a7fbfd72eca0
+
+	measure 'Baggage Insight' = FORMAT ( [Complaints per 1K Passengers], "0.0" ) & " complaints per 1,000 passengers  ·  " & [Latest Year Change]
+		displayFolder: 7 Dynamic insights
+		lineageTag: 4c3911f9-9e4d-5d44-99fc-e6a01b9cc240
+
+	/// One-line takeaway for the Pattern page: how tightly cancellations and complaints move together, and which calendar months are worst and best.
+	measure 'Pattern Insight' =
+			"Cancellations vs complaints: " & [Cancellations vs complaints] & "  ·  worst month " & [Worst Calendar Month]
+			    & " (" & FORMAT ( [Peak Calendar Rate], "0.0" ) & " per 1K), best " & [Best Calendar Month]
+			    & " (" & FORMAT ( [Low Calendar Rate], "0.0" ) & ")"
+		displayFolder: 7 Dynamic insights
+		lineageTag: 14d0b879-5915-51df-b785-e8a6547b478f
+
+	measure 'Passenger Insight' =
+			FORMAT ( [Satisfaction Rate], "0%" ) & " of " & FORMAT ( [Respondents], "#,0" ) & " passengers are satisfied"
+			    & "  ·  " & FORMAT ( [Satisfaction vs Overall] * 100, "+0.0;-0.0;0.0" ) & " pts vs all passengers"
+		displayFolder: 7 Dynamic insights
+		lineageTag: 6f1d39d0-8f34-5d33-b7e8-cad344824971
+
+	measure 'Driver Insight' = "Weakest: " & [Weakest Factor] & "  ·  strongest: " & [Strongest Factor] & "  ·  widest happy/unhappy gap: " & [Biggest Separator]
+		displayFolder: 7 Dynamic insights
+		lineageTag: 0c98a7c2-ccbd-5a3a-aa17-b19ae25bc0b8
+
+	measure 'Data Coverage' =
+			"Baggage data " & FORMAT ( MIN ( FactBaggage[MonthStart] ), "mmm yyyy" ) & " to "
+			    & FORMAT ( MAX ( FactBaggage[MonthStart] ), "mmm yyyy" )
+		displayFolder: 7 Dynamic insights
+		lineageTag: 24db2552-8a3e-58d3-82fa-dbeff48b9df6
+
+	/// Reads the Show Top slicer (defaults to 10). The table is not called TopN because that is a DAX function name.
+	measure 'Top N Value' = SELECTEDVALUE ( TopSelector[Show Top], 10 )
+		formatString: 0
+		displayFolder: 8 Parameters
+		lineageTag: 11aea4ba-28f4-569b-9d9b-4a23b58f00df
+
+	measure 'Selected Metric Label' = SELECTEDVALUE ( MetricSelector[Metric], "Complaints per 1,000 passengers" )
+		displayFolder: 8 Parameters
+		lineageTag: c7b04887-a950-561c-8a17-1326a5e7f436
+
+	/// One measure that changes meaning with the metric slicer (disconnected parameter table).
+	measure 'Selected Metric Value' =
+			SWITCH (
+			    [Selected Metric Label],
+			    "Complaints per 1,000 passengers", [Complaints per 1K Passengers],
+			    "Complaints per 100 flights", [Complaints per 100 Flights],
+			    "Cancellations per 100 flights", [Cancellations per 100 Flights],
+			    "Passengers per flight", [Passengers per Flight],
+			    BLANK ()
+			)
+		formatString: 0.0
+		displayFolder: 8 Parameters
+		lineageTag: 4c0f748c-0c0c-59a4-9aa0-e0bd9e37d5d6
+
+	measure 'Airport Title' =
+			IF (
+			    HASONEVALUE ( DimAirport[AirportLabel] ),
+			    SELECTEDVALUE ( DimAirport[AirportName] ) & "  ·  " & SELECTEDVALUE ( DimAirport[CityShort] ) & ", " & SELECTEDVALUE ( DimAirport[State] ),
+			    "No airport selected: on the Network page, right-click a bar or bubble and choose Drill through > Airport Profile"
+			)
+		displayFolder: 9 Drill-through and tooltips
+		lineageTag: 25b80c90-0ec3-5af3-895f-4af5a05b0a62
+
+	/// Rank among all 342 airports. ALL() is needed because the drill-through filter would otherwise leave only one airport to rank.
+	measure 'Network Rank' =
+			IF (
+			    HASONEVALUE ( DimAirport[AirportLabel] ),
+			    RANKX ( ALL ( DimAirport[AirportLabel] ), [Airport Traffic], , DESC, DENSE )
+			)
+		formatString: 0
+		displayFolder: 9 Drill-through and tooltips
+		lineageTag: a90f5bb5-5704-554b-b499-aa4ec92891da
+
+	measure 'Network Traffic Share' =
+			IF (
+			    HASONEVALUE ( DimAirport[AirportLabel] ),
+			    DIVIDE ( [Airport Traffic], CALCULATE ( [Airport Traffic], REMOVEFILTERS ( DimAirport ) ) )
+			)
+		formatString: 0.00%
+		displayFolder: 9 Drill-through and tooltips
+		lineageTag: 7ab708c0-97d4-5570-a643-287291ecee81
+
+	/// Title of the hover tooltip page: reads whatever airline / year the hovered data point carries.
+	measure 'Tooltip Title' =
+			IF ( HASONEVALUE ( DimAirline[Airline] ), SELECTEDVALUE ( DimAirline[Airline] ), "All airlines" )
+			    & IF ( HASONEVALUE ( DimDate[Year] ), "  ·  " & SELECTEDVALUE ( DimDate[Year] ), "" )
+		displayFolder: 9 Drill-through and tooltips
+		lineageTag: e4bcf9ed-f27a-5f3e-96dc-998ec0a80077
+
+	/// Pearson correlation between cancellations per 100 flights and complaints per 1K passengers, taken over every airline-month in the current selection.
+	measure 'Cancel-Complaint r' =
+			VAR T =
+			    ADDCOLUMNS (
+			        SUMMARIZE ( FactBaggage, FactBaggage[Airline], FactBaggage[MonthStart] ),
+			        "@x", [Cancellations per 100 Flights],
+			        "@y", [Complaints per 1K Passengers]
+			    )
+			VAR N   = COUNTROWS ( T )
+			VAR Sx  = SUMX ( T, [@x] )
+			VAR Sy  = SUMX ( T, [@y] )
+			VAR Sxy = SUMX ( T, [@x] * [@y] )
+			VAR Sxx = SUMX ( T, [@x] ^ 2 )
+			VAR Syy = SUMX ( T, [@y] ^ 2 )
+			VAR Den = ( N * Sxx - Sx ^ 2 ) * ( N * Syy - Sy ^ 2 )
+			RETURN
+			    IF ( N >= 3 && Den > 0, DIVIDE ( N * Sxy - Sx * Sy, SQRT ( Den ) ) )
+		formatString: 0.00
+		displayFolder: 4 Baggage - analysis
+		lineageTag: f5dee6dc-a4b4-41da-a8ed-1809495e53da
+
+	/// Plain-words reading of the correlation, shown on the Pattern page card.
+	measure 'Cancellations vs complaints' =
+			VAR r = [Cancel-Complaint r]
+			VAR Strength =
+			    SWITCH (
+			        TRUE (),
+			        ABS ( r ) >= 0.7, "Strong",
+			        ABS ( r ) >= 0.4, "Moderate",
+			        ABS ( r ) >= 0.2, "Weak",
+			        "No link"
+			    )
+			RETURN
+			    IF ( ISBLANK ( r ), "n/a", Strength & IF ( r < 0 && ABS ( r ) >= 0.2, " inverse", "" ) & "  ·  r = " & FORMAT ( r, "0.00" ) )
+		displayFolder: 4 Baggage - analysis
+		lineageTag: 2e389ba3-a507-4336-9740-8f6d973843e6
+
+	/// Calendar month (all selected years combined) with the highest complaint rate.
+	measure 'Worst Calendar Month' =
+			MAXX (
+			    TOPN (
+			        1,
+			        FILTER ( ALLSELECTED ( DimDate[MonthName] ), NOT ISBLANK ( [Baggage Complaints] ) ),
+			        [Complaints per 1K Passengers], DESC
+			    ),
+			    DimDate[MonthName]
+			)
+		displayFolder: 4 Baggage - analysis
+		lineageTag: 244e9b2d-fd19-41f8-a4a7-3af63a2969da
+
+	/// Calendar month (all selected years combined) with the lowest complaint rate.
+	measure 'Best Calendar Month' =
+			MAXX (
+			    TOPN (
+			        1,
+			        FILTER ( ALLSELECTED ( DimDate[MonthName] ), NOT ISBLANK ( [Baggage Complaints] ) ),
+			        [Complaints per 1K Passengers], ASC
+			    ),
+			    DimDate[MonthName]
+			)
+		displayFolder: 4 Baggage - analysis
+		lineageTag: 41f4485c-b328-4082-ae55-18273b5927f2
+
+	measure 'Peak Calendar Rate' = MAXX ( ALLSELECTED ( DimDate[MonthName] ), [Complaints per 1K Passengers] )
+		formatString: 0.0
+		displayFolder: 4 Baggage - analysis
+		lineageTag: 46e57541-6387-4787-8c1e-4b7f0f83b585
+
+	measure 'Low Calendar Rate' = MINX ( ALLSELECTED ( DimDate[MonthName] ), [Complaints per 1K Passengers] )
+		formatString: 0.0
+		displayFolder: 4 Baggage - analysis
+		lineageTag: bae1d579-38e0-4a0a-9854-e363d2a10338
+
+	/// Card text: worst month of the year and its rate.
+	measure 'Worst month of the year' = IF ( ISBLANK ( [Worst Calendar Month] ), BLANK (), [Worst Calendar Month] & "  (" & FORMAT ( [Peak Calendar Rate], "0.0" ) & ")" )
+		displayFolder: 4 Baggage - analysis
+		lineageTag: fc4e612d-462a-483d-9a02-e15c6f416569
+
+	/// Card text: best month of the year and its rate.
+	measure 'Best month of the year' = IF ( ISBLANK ( [Best Calendar Month] ), BLANK (), [Best Calendar Month] & "  (" & FORMAT ( [Low Calendar Rate], "0.0" ) & ")" )
+		displayFolder: 4 Baggage - analysis
+		lineageTag: 0514d856-ee12-4bd6-9c2f-4285b044f7c4
+
+	/// Complaint rate in the first selected year versus the last selected year (airline slicer respected, year slicer used only to pick the two years).
+	measure 'Rate change over the period' =
+			VAR Yrs    = FILTER ( ALLSELECTED ( DimDate[Year] ), NOT ISBLANK ( [Baggage Complaints] ) )
+			VAR FirstY = MINX ( Yrs, DimDate[Year] )
+			VAR LastY  = MAXX ( Yrs, DimDate[Year] )
+			VAR R0 = CALCULATE ( [Complaints per 1K Passengers], REMOVEFILTERS ( DimDate ), DimDate[Year] = FirstY )
+			VAR R1 = CALCULATE ( [Complaints per 1K Passengers], REMOVEFILTERS ( DimDate ), DimDate[Year] = LastY )
+			RETURN
+			    IF (
+			        ISBLANK ( R0 ) || ISBLANK ( R1 ) || FirstY = LastY,
+			        "pick 2+ years",
+			        IF ( R1 < R0, "▼ ", "▲ " ) & FORMAT ( ABS ( DIVIDE ( R1 - R0, R0 ) ), "0%" ) & "  " & FirstY & "→" & LastY
+			    )
+		displayFolder: 4 Baggage - analysis
+		lineageTag: 09df3d74-0b03-4aad-86b3-b6c346d63c6e
+
+	column Placeholder
+		dataType: int64
+		isHidden
+		lineageTag: 8ed9fa55-2aab-5aaf-b35f-e72e20a53566
+		summarizeBy: none
+		sourceColumn: [Placeholder]
+
+	partition Metrics = calculated
+		mode: import
+		source = ROW("Placeholder", 1)
+
+	annotation PBI_Id = 2c9799a6ce915b60b6899909a8611c43
+

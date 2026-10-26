@@ -1,0 +1,23 @@
+table MetricSelector
+	lineageTag: 0472e75d-4a3c-593a-8574-f0015398adae
+
+	column Metric
+		dataType: string
+		lineageTag: e5ef8d52-583d-5ba1-8b1c-1ba459f484c3
+		summarizeBy: none
+		sourceColumn: [Metric]
+		sortByColumn: MetricOrder
+
+	column MetricOrder
+		dataType: int64
+		isHidden
+		lineageTag: 6469f1be-f2bf-5bba-8ed4-efffca4fd831
+		summarizeBy: none
+		sourceColumn: [MetricOrder]
+
+	partition MetricSelector = calculated
+		mode: import
+		source = DATATABLE("Metric", STRING, "MetricOrder", INTEGER, {{"Complaints per 1,000 passengers", 1}, {"Complaints per 100 flights", 2}, {"Cancellations per 100 flights", 3}, {"Passengers per flight", 4}})
+
+	annotation PBI_Id = c502920922285268b93bae08c595db51
+

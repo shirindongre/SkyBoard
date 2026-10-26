@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "SkyBoard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "052a6e85-f240-41e7-94ea-042df9217dc1"
+  }
+}

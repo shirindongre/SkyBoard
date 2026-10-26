@@ -1,0 +1,239 @@
+table FactSurvey
+	lineageTag: dd831b2c-7569-531c-8533-615db021e432
+
+	column SurveyID
+		dataType: int64
+		isHidden
+		lineageTag: 36da48c9-c510-5085-8066-b678f0f4dcbb
+		summarizeBy: none
+		sourceColumn: SurveyID
+
+	column Gender
+		dataType: string
+		lineageTag: 48e95daf-16b9-5ac1-8515-ca5c671ce302
+		summarizeBy: none
+		sourceColumn: Gender
+
+	column CustomerType
+		dataType: string
+		lineageTag: 79ef0938-3b0e-5d81-be8e-7fac2f7dd441
+		summarizeBy: none
+		sourceColumn: CustomerType
+
+	column Age
+		dataType: int64
+		lineageTag: 1353a3fd-defb-5731-8051-63ebedf1596d
+		summarizeBy: none
+		sourceColumn: Age
+
+	column AgeBand
+		dataType: string
+		lineageTag: 51af576c-88a0-5ba1-9fae-4e5101cfbc56
+		summarizeBy: none
+		sourceColumn: AgeBand
+		sortByColumn: AgeBandSort
+
+	column AgeBandSort
+		dataType: int64
+		isHidden
+		lineageTag: 87cd5da4-8735-587c-bee3-36c44495b9c3
+		summarizeBy: none
+		sourceColumn: AgeBandSort
+
+	column TravelType
+		dataType: string
+		lineageTag: bb750ed7-d81b-559f-8062-9d556d00f37d
+		summarizeBy: none
+		sourceColumn: TravelType
+
+	column TravelClass
+		dataType: string
+		lineageTag: efb16198-fc27-518d-9048-1e09b8dc0ef6
+		summarizeBy: none
+		sourceColumn: TravelClass
+		sortByColumn: ClassSort
+
+	column ClassSort
+		dataType: int64
+		isHidden
+		lineageTag: afeb5a06-77d1-5eeb-84d0-847e9cf6d5e5
+		summarizeBy: none
+		sourceColumn: ClassSort
+
+	column FlightDistance
+		dataType: int64
+		formatString: #,0
+		lineageTag: 3bbf349f-3389-50af-9c1f-7e0bd44515ae
+		summarizeBy: none
+		sourceColumn: FlightDistance
+
+	column DistanceBand
+		dataType: string
+		lineageTag: 5e721959-89fe-5d95-988e-117c100baaf8
+		summarizeBy: none
+		sourceColumn: DistanceBand
+		sortByColumn: DistanceBandSort
+
+	column DistanceBandSort
+		dataType: int64
+		isHidden
+		lineageTag: ea56f47d-3ce4-5e6a-ab3f-71d26e7a6c7e
+		summarizeBy: none
+		sourceColumn: DistanceBandSort
+
+	column DepartureDelay
+		dataType: int64
+		formatString: #,0
+		lineageTag: a57c70d2-df3d-533c-b2d3-b2bbe3edcce1
+		summarizeBy: none
+		sourceColumn: DepartureDelay
+
+	column ArrivalDelay
+		dataType: double
+		formatString: #,0.0
+		lineageTag: fb986bed-f582-5a58-b145-d3a399b1add3
+		summarizeBy: none
+		sourceColumn: ArrivalDelay
+
+	column ArrivalDelayImputed
+		dataType: int64
+		isHidden
+		lineageTag: 43a68619-a325-5fcd-8c06-834e22ff05c1
+		summarizeBy: none
+		sourceColumn: ArrivalDelayImputed
+
+	column DelayBand
+		dataType: string
+		lineageTag: ed32312f-ff22-5b15-8d73-2a4ed2b814c9
+		summarizeBy: none
+		sourceColumn: DelayBand
+		sortByColumn: DelayBandSort
+
+	column DelayBandSort
+		dataType: int64
+		isHidden
+		lineageTag: 9fbf2875-72a3-5710-a35f-583b8d46fce6
+		summarizeBy: none
+		sourceColumn: DelayBandSort
+
+	column Wifi
+		dataType: int64
+		lineageTag: 18a1be5d-7281-52e1-9301-e59178f737b0
+		summarizeBy: none
+		sourceColumn: Wifi
+
+	column TimeConvenience
+		dataType: int64
+		lineageTag: 7ff04651-4a14-578b-aba1-2a4bc1a2059b
+		summarizeBy: none
+		sourceColumn: TimeConvenience
+
+	column OnlineBooking
+		dataType: int64
+		lineageTag: 9472c17e-2a67-5d92-9403-7c2ac9d940b4
+		summarizeBy: none
+		sourceColumn: OnlineBooking
+
+	column GateLocation
+		dataType: int64
+		lineageTag: a5eaf81a-84f2-50ed-a6e1-18ac70154a11
+		summarizeBy: none
+		sourceColumn: GateLocation
+
+	column FoodDrink
+		dataType: int64
+		lineageTag: 89dcd019-9641-52cf-97ea-fcf67346e582
+		summarizeBy: none
+		sourceColumn: FoodDrink
+
+	column OnlineBoarding
+		dataType: int64
+		lineageTag: 4b903caa-f7ea-5004-af4a-d6170932de7e
+		summarizeBy: none
+		sourceColumn: OnlineBoarding
+
+	column SeatComfort
+		dataType: int64
+		lineageTag: 26881ad9-1b7e-5902-9a01-3129c84bf5f6
+		summarizeBy: none
+		sourceColumn: SeatComfort
+
+	column Entertainment
+		dataType: int64
+		lineageTag: 676991ee-2839-5c97-949b-4230a37780c3
+		summarizeBy: none
+		sourceColumn: Entertainment
+
+	column OnboardService
+		dataType: int64
+		lineageTag: 18d18314-ef4b-5e4c-b260-f7e962336e74
+		summarizeBy: none
+		sourceColumn: OnboardService
+
+	column LegRoom
+		dataType: int64
+		lineageTag: 37687406-82da-5be1-a026-6b92507b7d95
+		summarizeBy: none
+		sourceColumn: LegRoom
+
+	column BaggageHandling
+		dataType: int64
+		lineageTag: 046f20c8-8712-5f97-87f1-7cd8eeb5c033
+		summarizeBy: none
+		sourceColumn: BaggageHandling
+
+	column Checkin
+		dataType: int64
+		lineageTag: eff31117-60ea-5c86-9fbc-ce0dd2abca21
+		summarizeBy: none
+		sourceColumn: Checkin
+
+	column InflightService
+		dataType: int64
+		lineageTag: e68569bc-d9f4-5673-bfaf-8b759a3b087c
+		summarizeBy: none
+		sourceColumn: InflightService
+
+	column Cleanliness
+		dataType: int64
+		lineageTag: 86bc96b5-3bdc-5377-a383-06d8fee76129
+		summarizeBy: none
+		sourceColumn: Cleanliness
+
+	column RatedItems
+		dataType: int64
+		lineageTag: e2df60b1-982f-588a-a99b-947233d78f45
+		summarizeBy: none
+		sourceColumn: RatedItems
+
+	column ServiceScore
+		dataType: double
+		formatString: 0.00
+		lineageTag: fbd71bfb-ce8a-507e-aba4-007a1b0069bb
+		summarizeBy: none
+		sourceColumn: ServiceScore
+
+	column Satisfied
+		dataType: int64
+		lineageTag: 0dccb807-fbb4-5d5c-8247-4cff1c8e2fb9
+		summarizeBy: none
+		sourceColumn: Satisfied
+
+	column SatisfactionLabel
+		dataType: string
+		lineageTag: 014b9b55-b90c-5c5d-9a33-cddd954e3920
+		summarizeBy: none
+		sourceColumn: SatisfactionLabel
+
+	partition FactSurvey = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "\fact_survey.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumns(Promoted, {{"SurveyID", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"Gender", each if _ = null or _ = "" then null else Text.From(_), type text}, {"CustomerType", each if _ = null or _ = "" then null else Text.From(_), type text}, {"Age", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"AgeBand", each if _ = null or _ = "" then null else Text.From(_), type text}, {"AgeBandSort", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"TravelType", each if _ = null or _ = "" then null else Text.From(_), type text}, {"TravelClass", each if _ = null or _ = "" then null else Text.From(_), type text}, {"ClassSort", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"FlightDistance", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"DistanceBand", each if _ = null or _ = "" then null else Text.From(_), type text}, {"DistanceBandSort", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"DepartureDelay", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"ArrivalDelay", each if _ = null or _ = "" then null else Number.FromText(_, "en-US"), type number}, {"ArrivalDelayImputed", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"DelayBand", each if _ = null or _ = "" then null else Text.From(_), type text}, {"DelayBandSort", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"Wifi", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"TimeConvenience", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"OnlineBooking", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"GateLocation", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"FoodDrink", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"OnlineBoarding", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"SeatComfort", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"Entertainment", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"OnboardService", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"LegRoom", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"BaggageHandling", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"Checkin", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"InflightService", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"Cleanliness", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"RatedItems", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"ServiceScore", each if _ = null or _ = "" then null else Number.FromText(_, "en-US"), type number}, {"Satisfied", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"SatisfactionLabel", each if _ = null or _ = "" then null else Text.From(_), type text}})
+				in
+					Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,196 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "8b1955e2fbafe9a51cba",
+  "position": {
+    "x": 445.3,
+    "y": 156,
+    "z": 13000,
+    "height": 494,
+    "width": 389.3,
+    "tabOrder": 13000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "2 · Model and DAX",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "14pt",
+                      "color": "#5FD08F",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Star schema: a marked date table, airport and airline dimensions, four fact tables.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  The airport dimension plays two roles: origin is active, destination is switched on with USERELATIONSHIP.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  91 measures in one Metrics table, grouped into nine display folders.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  SAMEPERIODLASTYEAR, TOTALYTD, DATESINPERIOD, RANKX, TOPN, ALLSELECTED and REMOVEFILTERS.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Disconnected tables drive the metric switch and the Show Top control.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Insight lines are DAX text measures, so they rewrite themselves as you filter.",
+                    "textStyle": {
+                      "fontWeight": "normal",
+                      "fontSize": "10.5pt",
+                      "color": "#ECEFEC",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#25282B'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "35D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

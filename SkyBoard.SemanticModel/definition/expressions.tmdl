@@ -1,0 +1,5 @@
+expression DataFolder = "D:\Shirin\Uni\Sem 5\DV Lab\SkyBoard_v2\data" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: c12ecc18-ad34-5586-9155-9ffcf1b0a8fa
+
+	annotation PBI_ResultType = Text
+

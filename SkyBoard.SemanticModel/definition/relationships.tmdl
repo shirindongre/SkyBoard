@@ -1,0 +1,21 @@
+relationship Baggage_to_Date
+	fromColumn: FactBaggage.MonthStart
+	toColumn: DimDate.Date
+
+relationship Baggage_to_Airline
+	fromColumn: FactBaggage.Airline
+	toColumn: DimAirline.Airline
+
+relationship Route_Origin_to_Airport
+	fromColumn: FactRoute.OriginID
+	toColumn: DimAirport.AirportID
+
+relationship Route_Dest_to_Airport
+	isActive: false
+	fromColumn: FactRoute.DestID
+	toColumn: DimAirport.AirportID
+
+relationship Ratings_to_Survey
+	fromColumn: FactRatings.SurveyID
+	toColumn: FactSurvey.SurveyID
+

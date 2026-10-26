@@ -1,0 +1,85 @@
+table DimDate
+	lineageTag: 0e3301bd-0001-50ee-bdb5-41d1b2ead83c
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: dd mmm yyyy
+		lineageTag: 3d2fac63-dfdd-5d43-b420-496c8b8d5744
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		lineageTag: 045c065c-7442-5caf-a739-0013ab965301
+		summarizeBy: none
+		sourceColumn: Year
+
+	column QuarterNumber
+		dataType: int64
+		isHidden
+		lineageTag: 498472bc-24e3-5627-a5ec-e2a7561d9144
+		summarizeBy: none
+		sourceColumn: QuarterNumber
+
+	column MonthNumber
+		dataType: int64
+		isHidden
+		lineageTag: a832792d-015d-568b-aacf-fe0b6f411d50
+		summarizeBy: none
+		sourceColumn: MonthNumber
+
+	column MonthName
+		dataType: string
+		lineageTag: 44ebb9e1-ba64-58d0-821b-ecf587601e3a
+		summarizeBy: none
+		sourceColumn: MonthName
+		sortByColumn: MonthNumber
+
+	column MonthShort
+		dataType: string
+		lineageTag: 851beba7-494e-51b8-b5bb-b9e3627d58c9
+		summarizeBy: none
+		sourceColumn: MonthShort
+		sortByColumn: MonthNumber
+
+	column Quarter
+		dataType: string
+		lineageTag: f0de2b54-5ad0-5cc4-b19c-a28a29af3b65
+		summarizeBy: none
+		sourceColumn: Quarter
+		sortByColumn: QuarterNumber
+
+	column YearMonth
+		dataType: string
+		lineageTag: 2974543a-6476-56fc-9e6d-81acd3cb8f43
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+	column YearQuarter
+		dataType: string
+		lineageTag: 884f49ae-eec6-5663-884a-f92a55462ccf
+		summarizeBy: none
+		sourceColumn: YearQuarter
+
+	column Season
+		dataType: string
+		lineageTag: 325f11e4-aef1-56db-9b9b-c2e2a1994306
+		summarizeBy: none
+		sourceColumn: Season
+
+	partition DimDate = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "\dim_date.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumns(Promoted, {{"Date", each if _ = null or _ = "" then null else Date.FromText(_, [Format="yyyy-MM-dd", Culture="en-US"]), type date}, {"Year", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"QuarterNumber", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"MonthNumber", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"MonthName", each if _ = null or _ = "" then null else Text.From(_), type text}, {"MonthShort", each if _ = null or _ = "" then null else Text.From(_), type text}, {"Quarter", each if _ = null or _ = "" then null else Text.From(_), type text}, {"YearMonth", each if _ = null or _ = "" then null else Text.From(_), type text}, {"YearQuarter", each if _ = null or _ = "" then null else Text.From(_), type text}, {"Season", each if _ = null or _ = "" then null else Text.From(_), type text}})
+				in
+					Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,86 @@
+table DimAirport
+	lineageTag: c896f2f2-b94b-5978-a3a6-a16c1face4c9
+
+	column AirportID
+		dataType: int64
+		isHidden
+		lineageTag: bd8fbab1-d931-5705-bdda-c2a051dafda1
+		summarizeBy: none
+		sourceColumn: AirportID
+
+	column IATA
+		dataType: string
+		lineageTag: 0a414689-f8c2-5682-8074-7a624a2dbeb0
+		summarizeBy: none
+		sourceColumn: IATA
+
+	column AirportLabel
+		dataType: string
+		lineageTag: c74f3159-6111-5496-9c58-bd828c06dbc2
+		summarizeBy: none
+		sourceColumn: AirportLabel
+
+	column AirportName
+		dataType: string
+		lineageTag: 4e1516ed-9755-5be2-a0c9-70d8a5884c83
+		summarizeBy: none
+		sourceColumn: AirportName
+
+	column City
+		dataType: string
+		lineageTag: f1dce6ce-adcf-5c4d-9d01-3e1c60019979
+		summarizeBy: none
+		sourceColumn: City
+
+	column CityShort
+		dataType: string
+		lineageTag: 41ba3d83-2564-59aa-b218-c1da6ef489f9
+		summarizeBy: none
+		sourceColumn: CityShort
+
+	column State
+		dataType: string
+		lineageTag: 104640c3-a312-537c-bf23-c1741bdd01fe
+		summarizeBy: none
+		sourceColumn: State
+
+	column StateName
+		dataType: string
+		lineageTag: a63e90a5-a786-592a-9c55-fdd1858f1771
+		summarizeBy: none
+		sourceColumn: StateName
+
+	column Region
+		dataType: string
+		lineageTag: 8738039d-f097-5389-95c7-6edd33bc9076
+		summarizeBy: none
+		sourceColumn: Region
+
+	column Latitude
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 33f6e37c-faeb-5a2c-957f-2281acb11800
+		dataCategory: Latitude
+		summarizeBy: none
+		sourceColumn: Latitude
+
+	column Longitude
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 46ddf48b-9d1f-5e1d-988c-ee3ef34c9598
+		dataCategory: Longitude
+		summarizeBy: none
+		sourceColumn: Longitude
+
+	partition DimAirport = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "\dim_airport.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumns(Promoted, {{"AirportID", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"IATA", each if _ = null or _ = "" then null else Text.From(_), type text}, {"AirportLabel", each if _ = null or _ = "" then null else Text.From(_), type text}, {"AirportName", each if _ = null or _ = "" then null else Text.From(_), type text}, {"City", each if _ = null or _ = "" then null else Text.From(_), type text}, {"CityShort", each if _ = null or _ = "" then null else Text.From(_), type text}, {"State", each if _ = null or _ = "" then null else Text.From(_), type text}, {"StateName", each if _ = null or _ = "" then null else Text.From(_), type text}, {"Region", each if _ = null or _ = "" then null else Text.From(_), type text}, {"Latitude", each if _ = null or _ = "" then null else Number.FromText(_, "en-US"), type number}, {"Longitude", each if _ = null or _ = "" then null else Number.FromText(_, "en-US"), type number}})
+				in
+					Typed
+
+	annotation PBI_ResultType = Table
+

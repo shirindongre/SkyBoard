@@ -1,0 +1,244 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "541c7dab8cd83e1c6bb4",
+  "position": {
+    "x": 855.8,
+    "y": 238,
+    "z": 18000,
+    "height": 300,
+    "width": 384.3,
+    "tabOrder": 18000
+  },
+  "visual": {
+    "visualType": "scriptVisual",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactBaggage"
+                    }
+                  },
+                  "Property": "Airline"
+                }
+              },
+              "queryRef": "FactBaggage.Airline",
+              "nativeQueryRef": "Airline"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactBaggage"
+                    }
+                  },
+                  "Property": "MonthStart"
+                }
+              },
+              "queryRef": "FactBaggage.MonthStart",
+              "nativeQueryRef": "MonthStart"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Baggage Complaints"
+                }
+              },
+              "queryRef": "Metrics.Baggage Complaints",
+              "nativeQueryRef": "Baggage Complaints"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Passengers Enplaned"
+                }
+              },
+              "queryRef": "Metrics.Passengers Enplaned",
+              "nativeQueryRef": "Passengers Enplaned"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "script": [
+        {
+          "properties": {
+            "source": {
+              "expr": {
+                "Literal": {
+                  "Value": "'# SkyBoard R visual 3 - Trend vs season in baggage complaints (STL decomposition)\n# Separates the long-run trend from the repeating yearly pattern and the one-off noise.\n# Pools the airlines currently selected: monthly rate = complaints / passengers x 1,000.\n# Fields needed: FactBaggage[Airline], FactBaggage[MonthStart], [Baggage Complaints], [Passengers Enplaned]\nlibrary(ggplot2)\npanel <- \"#25282B\"; ink <- \"#ECEFEC\"; mute <- \"#A9B1AC\"; amber <- \"#5FD08F\"; cyan <- \"#4CC38A\"; coral <- \"#E0736A\"; trend <- \"#8FD6AE\"\n\nblank_msg <- function(msg) {\n  op <- par(bg = panel, mar = c(0, 0, 0, 0)); on.exit(par(op))\n  plot.new(); text(0.5, 0.5, msg, col = ink, cex = 1.05)\n}\n\nd <- dataset\nm <- data.frame(month = as.Date(character()))                       # empty until proven otherwise\nif (nrow(d) > 0) {\n  d$month <- as.Date(format(as.Date(d$MonthStart), \"%Y-%m-01\"))\n  m <- aggregate(cbind(c = d[[\"Baggage Complaints\"]], p = d[[\"Passengers Enplaned\"]]) ~ month, data = d, FUN = sum)\n  m <- m[order(m$month), ]\n  m$rate <- m$c / m$p * 1000\n  # fill missing calendar months (e.g. after a filter) so the monthly time series stays aligned\n  m <- merge(data.frame(month = seq(min(m$month), max(m$month), by = \"month\")), m, by = \"month\", all.x = TRUE)\n  if (anyNA(m$rate)) m$rate <- approx(seq_len(nrow(m)), m$rate, seq_len(nrow(m)), rule = 2)$y\n}\n\nif (nrow(m) < 24) {   # also covers an empty selection\n  blank_msg(\"Needs at least 24 months for a seasonal split\\n(widen the year slicer)\")\n} else {\n  y0 <- as.integer(format(m$month[1], \"%Y\")); mo0 <- as.integer(format(m$month[1], \"%m\"))\n  ts_rate <- ts(m$rate, start = c(y0, mo0), frequency = 12)\n  st <- stl(ts_rate, s.window = \"periodic\", robust = TRUE)\n  comp <- as.data.frame(st$time.series)\n  df <- rbind(\n    data.frame(month = m$month, panel = \"Observed rate  +  trend\", value = m$rate,   kind = \"obs\"),\n    data.frame(month = m$month, panel = \"Observed rate  +  trend\", value = comp$trend, kind = \"trend\"),\n    data.frame(month = m$month, panel = \"Seasonal effect (same every year)\", value = comp$seasonal, kind = \"seas\"),\n    data.frame(month = m$month, panel = \"What is left over\", value = comp$remainder, kind = \"rem\"))\n  df$panel <- factor(df$panel, levels = c(\"Observed rate  +  trend\", \"Seasonal effect (same every year)\", \"What is left over\"))\n  seas_by_month <- tapply(comp$seasonal, as.integer(format(m$month, \"%m\")), mean)\n  pk <- month.name[as.integer(names(which.max(seas_by_month)))]\n  lo <- month.name[as.integer(names(which.min(seas_by_month)))]\n  sw <- max(seas_by_month) - min(seas_by_month)\n\n  p <- ggplot(df, aes(month, value)) +\n    geom_hline(data = data.frame(panel = factor(c(\"Seasonal effect (same every year)\", \"What is left over\"),\n                                                levels = levels(df$panel)), y = 0),\n               aes(yintercept = y), colour = \"#3C4247\", linewidth = 0.3) +\n    geom_line(data = subset(df, kind == \"obs\"),   colour = \"#6F7873\", linewidth = 0.5) +\n    geom_line(data = subset(df, kind == \"trend\"), colour = trend,     linewidth = 1.1) +\n    geom_line(data = subset(df, kind == \"seas\"),  colour = cyan,      linewidth = 0.8) +\n    geom_col(data = subset(df, kind == \"rem\"),    fill = coral, width = 20) +\n    facet_wrap(~ panel, ncol = 1, scales = \"free_y\") +\n    labs(title = \"Trend vs season in baggage complaints\",\n         subtitle = sprintf(\"Seasonal swing of %.1f complaints per 1,000 passengers: worst in %s, best in %s\",\n                            sw, pk, lo), x = NULL, y = \"Complaints per 1,000 passengers\") +\n    theme_minimal(base_size = 9) +\n    theme(plot.background = element_rect(fill = panel, colour = NA),\n          panel.background = element_rect(fill = panel, colour = NA),\n          panel.grid.major = element_line(colour = \"#343A3E\", linewidth = 0.3),\n          panel.grid.minor = element_blank(),\n          strip.text = element_text(colour = ink, size = 8, face = \"bold\", hjust = 0),\n          plot.title = element_text(colour = amber, face = \"bold\", size = 12),\n          plot.subtitle = element_text(colour = mute, size = 8),\n          axis.text = element_text(colour = ink, size = 7.5),\n          axis.title.y = element_text(colour = mute, size = 7.5),\n          plot.margin = margin(6, 10, 4, 6))\n  print(p)\n}\n'"
+                }
+              }
+            },
+            "provider": {
+              "expr": {
+                "Literal": {
+                  "Value": "'R'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'R3  ·  Trend, season and noise'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#ECEFEC'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#25282B'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#3A3F44'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'R visual on the 6 R Lab page: R3  ·  Trend, season and noise. Shows Airline, MonthStart, Baggage Complaints, Passengers Enplaned.'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,496 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "0a236d7bfef4b6d0f26a",
+  "position": {
+    "x": 438.3,
+    "y": 238,
+    "z": 17000,
+    "height": 300,
+    "width": 403.5,
+    "tabOrder": 17000
+  },
+  "visual": {
+    "visualType": "scriptVisual",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "SurveyID"
+                }
+              },
+              "queryRef": "FactSurvey.SurveyID",
+              "nativeQueryRef": "SurveyID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Satisfied"
+                }
+              },
+              "queryRef": "FactSurvey.Satisfied",
+              "nativeQueryRef": "Satisfied"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Wifi"
+                }
+              },
+              "queryRef": "FactSurvey.Wifi",
+              "nativeQueryRef": "Wifi"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "TimeConvenience"
+                }
+              },
+              "queryRef": "FactSurvey.TimeConvenience",
+              "nativeQueryRef": "TimeConvenience"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "OnlineBooking"
+                }
+              },
+              "queryRef": "FactSurvey.OnlineBooking",
+              "nativeQueryRef": "OnlineBooking"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "GateLocation"
+                }
+              },
+              "queryRef": "FactSurvey.GateLocation",
+              "nativeQueryRef": "GateLocation"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "FoodDrink"
+                }
+              },
+              "queryRef": "FactSurvey.FoodDrink",
+              "nativeQueryRef": "FoodDrink"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "OnlineBoarding"
+                }
+              },
+              "queryRef": "FactSurvey.OnlineBoarding",
+              "nativeQueryRef": "OnlineBoarding"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "SeatComfort"
+                }
+              },
+              "queryRef": "FactSurvey.SeatComfort",
+              "nativeQueryRef": "SeatComfort"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Entertainment"
+                }
+              },
+              "queryRef": "FactSurvey.Entertainment",
+              "nativeQueryRef": "Entertainment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "OnboardService"
+                }
+              },
+              "queryRef": "FactSurvey.OnboardService",
+              "nativeQueryRef": "OnboardService"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "LegRoom"
+                }
+              },
+              "queryRef": "FactSurvey.LegRoom",
+              "nativeQueryRef": "LegRoom"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "BaggageHandling"
+                }
+              },
+              "queryRef": "FactSurvey.BaggageHandling",
+              "nativeQueryRef": "BaggageHandling"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Checkin"
+                }
+              },
+              "queryRef": "FactSurvey.Checkin",
+              "nativeQueryRef": "Checkin"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "InflightService"
+                }
+              },
+              "queryRef": "FactSurvey.InflightService",
+              "nativeQueryRef": "InflightService"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Cleanliness"
+                }
+              },
+              "queryRef": "FactSurvey.Cleanliness",
+              "nativeQueryRef": "Cleanliness"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "TravelClass"
+                }
+              },
+              "queryRef": "FactSurvey.TravelClass",
+              "nativeQueryRef": "TravelClass"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "TravelType"
+                }
+              },
+              "queryRef": "FactSurvey.TravelType",
+              "nativeQueryRef": "TravelType"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "CustomerType"
+                }
+              },
+              "queryRef": "FactSurvey.CustomerType",
+              "nativeQueryRef": "CustomerType"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Age"
+                }
+              },
+              "queryRef": "FactSurvey.Age",
+              "nativeQueryRef": "Age"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "FlightDistance"
+                }
+              },
+              "queryRef": "FactSurvey.FlightDistance",
+              "nativeQueryRef": "FlightDistance"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "ArrivalDelay"
+                }
+              },
+              "queryRef": "FactSurvey.ArrivalDelay",
+              "nativeQueryRef": "ArrivalDelay"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "script": [
+        {
+          "properties": {
+            "source": {
+              "expr": {
+                "Literal": {
+                  "Value": "'# SkyBoard R visual 2 - What actually drives satisfaction? (adjusted logistic regression)\n# DAX can show raw gaps between happy and unhappy passengers; only a model can separate the\n# effect of one service item from the others and from class, trip purpose, loyalty, age,\n# distance and delay at the same time.\n# Fields needed: FactSurvey[SurveyID], Satisfied, the 14 rating columns, TravelClass, TravelType,\n#                CustomerType, Age, FlightDistance, ArrivalDelay\nlibrary(ggplot2)\npanel <- \"#25282B\"; ink <- \"#ECEFEC\"; mute <- \"#A9B1AC\"; amber <- \"#5FD08F\"; cyan <- \"#4CC38A\"; grey <- \"#6F7873\"\n\nrate_lab <- c(Wifi = \"Inflight wifi\", TimeConvenience = \"Departure/arrival time\",\n  OnlineBooking = \"Online booking\", GateLocation = \"Gate location\", FoodDrink = \"Food & drink\",\n  OnlineBoarding = \"Online boarding\", SeatComfort = \"Seat comfort\", Entertainment = \"Entertainment\",\n  OnboardService = \"On-board service\", LegRoom = \"Leg room\", BaggageHandling = \"Baggage handling\",\n  Checkin = \"Check-in\", InflightService = \"Inflight service\", Cleanliness = \"Cleanliness\")\n\nblank_msg <- function(msg) {\n  op <- par(bg = panel, mar = c(0, 0, 0, 0)); on.exit(par(op))\n  plot.new(); text(0.5, 0.5, msg, col = ink, cex = 1.05)\n}\n\nd <- dataset\nrate_cols <- intersect(names(rate_lab), names(d))\nnum_ctl   <- intersect(c(\"Age\", \"FlightDistance\", \"ArrivalDelay\"), names(d))\ncat_ctl   <- intersect(c(\"TravelClass\", \"TravelType\", \"CustomerType\"), names(d))\nfor (v in cat_ctl) d[[v]] <- factor(d[[v]])\ncat_ctl <- cat_ctl[sapply(cat_ctl, function(v) nlevels(droplevels(d[[v]])) > 1)]   # drop single-level controls\nfor (v in num_ctl) d[[v]] <- as.numeric(scale(d[[v]]))\nd <- d[complete.cases(d[, c(\"Satisfied\", rate_cols, num_ctl, cat_ctl)]), ]\nd <- d[, c(\"Satisfied\", rate_cols, num_ctl, cat_ctl)]\n\nif (nrow(d) < 200 || length(unique(d$Satisfied)) < 2) {\n  blank_msg(\"Needs a mix of satisfied and unhappy passengers\\n(try clearing a slicer)\")\n} else {\n  fit <- tryCatch(suppressWarnings(glm(reformulate(setdiff(names(d), \"Satisfied\"), \"Satisfied\"),\n                                       data = d, family = binomial())), error = function(e) NULL)\n  if (is.null(fit)) {\n    blank_msg(\"Model could not be fitted for this selection\")\n  } else {\n    co <- coef(fit); ci <- suppressMessages(confint.default(fit))\n    keep <- intersect(rate_cols, names(co))\n    res <- data.frame(item = unname(rate_lab[keep]), OR = exp(co[keep]),\n                      lo = exp(ci[keep, 1]), hi = exp(ci[keep, 2]), stringsAsFactors = FALSE)\n    res$sig  <- res$lo > 1 | res$hi < 1\n    res$item <- factor(res$item, levels = res$item[order(res$OR)])\n    # AUC by rank (Mann-Whitney)\n    pr <- fitted(fit); r <- rank(pr); n1 <- sum(d$Satisfied == 1); n0 <- sum(d$Satisfied == 0)\n    auc <- (sum(r[d$Satisfied == 1]) - n1 * (n1 + 1) / 2) / (n1 * n0)\n    top <- as.character(res$item[which.max(res$OR)])\n    p <- ggplot(res, aes(OR, item, colour = sig)) +\n      geom_vline(xintercept = 1, colour = grey, linetype = \"dashed\") +\n      geom_pointrange(aes(xmin = lo, xmax = hi), size = 0.45, linewidth = 0.7) +\n      scale_colour_manual(values = c(`TRUE` = cyan, `FALSE` = grey), guide = \"none\") +\n      scale_x_continuous(trans = \"log2\", breaks = c(0.5, 0.75, 1, 1.5, 2, 3),\n                         labels = function(x) paste0(x, \"x\")) +\n      labs(title = \"What really drives satisfaction?\",\n           subtitle = sprintf(\"Odds multiplier per +1 rating point, adjusted for class, trip, loyalty, age, distance, delay\\n%s passengers - in-sample AUC %.2f - strongest: %s\",\n                              format(nrow(d), big.mark = \",\"), auc, top),\n           x = \"Odds of being satisfied (log scale; right of 1x helps, left hurts)\", y = NULL) +\n      theme_minimal(base_size = 9) +\n      theme(plot.background = element_rect(fill = panel, colour = NA),\n            panel.background = element_rect(fill = panel, colour = NA),\n            panel.grid.major = element_line(colour = \"#343A3E\", linewidth = 0.3),\n            panel.grid.minor = element_blank(),\n            plot.title = element_text(colour = amber, face = \"bold\", size = 12),\n            plot.subtitle = element_text(colour = mute, size = 7.5, lineheight = 1.1),\n            axis.text = element_text(colour = ink, size = 8),\n            axis.title.x = element_text(colour = mute, size = 7.5),\n            plot.margin = margin(6, 10, 4, 6))\n    print(p)\n  }\n}\n'"
+                }
+              }
+            },
+            "provider": {
+              "expr": {
+                "Literal": {
+                  "Value": "'R'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'R2  ·  What really drives satisfaction'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#ECEFEC'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#25282B'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#3A3F44'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'R visual on the 6 R Lab page: R2  ·  What really drives satisfaction. Shows SurveyID, Satisfied, Wifi, TimeConvenience.'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

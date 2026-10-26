@@ -1,0 +1,454 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "90ce4982bca3e2c1f89a",
+  "position": {
+    "x": 40,
+    "y": 238,
+    "z": 16000,
+    "height": 300,
+    "width": 384.3,
+    "tabOrder": 16000
+  },
+  "visual": {
+    "visualType": "scriptVisual",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "SurveyID"
+                }
+              },
+              "queryRef": "FactSurvey.SurveyID",
+              "nativeQueryRef": "SurveyID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Wifi"
+                }
+              },
+              "queryRef": "FactSurvey.Wifi",
+              "nativeQueryRef": "Wifi"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "TimeConvenience"
+                }
+              },
+              "queryRef": "FactSurvey.TimeConvenience",
+              "nativeQueryRef": "TimeConvenience"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "OnlineBooking"
+                }
+              },
+              "queryRef": "FactSurvey.OnlineBooking",
+              "nativeQueryRef": "OnlineBooking"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "GateLocation"
+                }
+              },
+              "queryRef": "FactSurvey.GateLocation",
+              "nativeQueryRef": "GateLocation"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "FoodDrink"
+                }
+              },
+              "queryRef": "FactSurvey.FoodDrink",
+              "nativeQueryRef": "FoodDrink"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "OnlineBoarding"
+                }
+              },
+              "queryRef": "FactSurvey.OnlineBoarding",
+              "nativeQueryRef": "OnlineBoarding"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "SeatComfort"
+                }
+              },
+              "queryRef": "FactSurvey.SeatComfort",
+              "nativeQueryRef": "SeatComfort"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Entertainment"
+                }
+              },
+              "queryRef": "FactSurvey.Entertainment",
+              "nativeQueryRef": "Entertainment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "OnboardService"
+                }
+              },
+              "queryRef": "FactSurvey.OnboardService",
+              "nativeQueryRef": "OnboardService"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "LegRoom"
+                }
+              },
+              "queryRef": "FactSurvey.LegRoom",
+              "nativeQueryRef": "LegRoom"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "BaggageHandling"
+                }
+              },
+              "queryRef": "FactSurvey.BaggageHandling",
+              "nativeQueryRef": "BaggageHandling"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Checkin"
+                }
+              },
+              "queryRef": "FactSurvey.Checkin",
+              "nativeQueryRef": "Checkin"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "InflightService"
+                }
+              },
+              "queryRef": "FactSurvey.InflightService",
+              "nativeQueryRef": "InflightService"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Cleanliness"
+                }
+              },
+              "queryRef": "FactSurvey.Cleanliness",
+              "nativeQueryRef": "Cleanliness"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Satisfied"
+                }
+              },
+              "queryRef": "FactSurvey.Satisfied",
+              "nativeQueryRef": "Satisfied"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "ArrivalDelay"
+                }
+              },
+              "queryRef": "FactSurvey.ArrivalDelay",
+              "nativeQueryRef": "ArrivalDelay"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "FlightDistance"
+                }
+              },
+              "queryRef": "FactSurvey.FlightDistance",
+              "nativeQueryRef": "FlightDistance"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactSurvey"
+                    }
+                  },
+                  "Property": "Age"
+                }
+              },
+              "queryRef": "FactSurvey.Age",
+              "nativeQueryRef": "Age"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "script": [
+        {
+          "properties": {
+            "source": {
+              "expr": {
+                "Literal": {
+                  "Value": "'# SkyBoard R visual 1 - What moves together?\n# Correlation matrix of the 14 service ratings, arrival delay, distance, age and satisfaction.\n# Reacts to every slicer on the page (class, travel type, loyalty, age band).\n# Fields needed: FactSurvey[SurveyID] + the 14 rating columns + Satisfied + ArrivalDelay + FlightDistance + Age\nlibrary(ggplot2)\npanel <- \"#25282B\"; ink <- \"#ECEFEC\"; mute <- \"#A9B1AC\"; amber <- \"#5FD08F\"\n\nlabels <- c(Wifi = \"Inflight wifi\", TimeConvenience = \"Departure/arrival time\",\n  OnlineBooking = \"Online booking\", GateLocation = \"Gate location\", FoodDrink = \"Food & drink\",\n  OnlineBoarding = \"Online boarding\", SeatComfort = \"Seat comfort\", Entertainment = \"Entertainment\",\n  OnboardService = \"On-board service\", LegRoom = \"Leg room\", BaggageHandling = \"Baggage handling\",\n  Checkin = \"Check-in\", InflightService = \"Inflight service\", Cleanliness = \"Cleanliness\",\n  ArrivalDelay = \"Arrival delay\", FlightDistance = \"Flight distance\", Age = \"Age\",\n  Satisfied = \"\\u2605 SATISFIED\")\n\nd <- dataset[, intersect(names(labels), names(dataset)), drop = FALSE]\nd <- d[, sapply(d, function(x) sd(x, na.rm = TRUE) > 0), drop = FALSE]    # drop constant columns\n\nif (nrow(d) < 30 || ncol(d) < 3) {\n  par(bg = panel, mar = c(0, 0, 0, 0)); plot.new()\n  text(0.5, 0.5, \"Not enough respondents for this slicer selection\", col = ink, cex = 1.1)\n} else {\n  cm  <- cor(d, use = \"pairwise.complete.obs\")\n  ord <- hclust(as.dist(1 - cm), method = \"average\")$order\n  cm  <- cm[ord, ord]\n  nm  <- unname(labels[colnames(cm)])\n  long <- expand.grid(x = seq_along(nm), y = seq_along(nm))\n  long$r <- cm[cbind(long$x, long$y)]\n  long$txt <- ifelse(long$x >= long$y, sprintf(\"%.2f\", long$r), \"\")          # lower triangle only\n  long$r_plot <- ifelse(long$x >= long$y, long$r, NA)\n\n  p <- ggplot(long, aes(x, y, fill = r_plot)) +\n    geom_tile(colour = panel, linewidth = 0.8) +\n    geom_text(aes(label = txt, colour = abs(r) > 0.35), size = 2.5, show.legend = FALSE) +\n    scale_colour_manual(values = c(`TRUE` = ink, `FALSE` = ink)) +\n    scale_fill_gradient2(low = \"#B85A52\", mid = \"#2F3438\", high = \"#2E8F5B\", midpoint = 0,\n                         limits = c(-1, 1), na.value = panel, name = \"r\") +\n    scale_x_continuous(breaks = seq_along(nm), labels = nm, expand = c(0, 0)) +\n    scale_y_continuous(breaks = seq_along(nm), labels = nm, expand = c(0, 0)) +\n    labs(title = \"What moves together?\",\n         subtitle = sprintf(\"Correlation across %s passengers - sorted so related items sit together\",\n                            format(nrow(dataset), big.mark = \",\"))) +\n    theme_minimal(base_size = 9) +\n    theme(plot.background  = element_rect(fill = panel, colour = NA),\n          panel.background = element_rect(fill = panel, colour = NA),\n          panel.grid       = element_blank(),\n          plot.title       = element_text(colour = amber, face = \"bold\", size = 12),\n          plot.subtitle    = element_text(colour = mute, size = 8),\n          axis.title       = element_blank(),\n          axis.text.x      = element_text(angle = 45, hjust = 1, size = 7.5, colour = ink),\n          axis.text.y      = element_text(size = 7.5, colour = ink),\n          legend.text      = element_text(colour = mute, size = 7),\n          legend.title     = element_text(colour = mute, size = 8),\n          plot.margin      = margin(6, 8, 4, 6))\n  print(p)\n}\n'"
+                }
+              }
+            },
+            "provider": {
+              "expr": {
+                "Literal": {
+                  "Value": "'R'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'R1  ·  What moves with what'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#ECEFEC'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#25282B'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#3A3F44'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'R visual on the 6 R Lab page: R1  ·  What moves with what. Shows SurveyID, Wifi, TimeConvenience, OnlineBooking.'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

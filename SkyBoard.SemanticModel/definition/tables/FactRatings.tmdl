@@ -1,0 +1,40 @@
+table FactRatings
+	lineageTag: 15bf8acc-642f-547a-8510-6138f1bf932f
+
+	column SurveyID
+		dataType: int64
+		isHidden
+		lineageTag: d9855679-3d9f-5d16-a015-ce6580d9d669
+		summarizeBy: none
+		sourceColumn: SurveyID
+
+	column Factor
+		dataType: string
+		lineageTag: ca4b09af-34af-526a-a6f8-7fc1500e7ee3
+		summarizeBy: none
+		sourceColumn: Factor
+
+	column FactorGroup
+		dataType: string
+		lineageTag: 96f24d4b-e31d-5044-8bb8-10f4a94e1715
+		summarizeBy: none
+		sourceColumn: FactorGroup
+
+	column Rating
+		dataType: int64
+		lineageTag: 682db8a7-640d-50cc-b409-f38915af38cb
+		summarizeBy: none
+		sourceColumn: Rating
+
+	partition FactRatings = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "\fact_ratings.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumns(Promoted, {{"SurveyID", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}, {"Factor", each if _ = null or _ = "" then null else Text.From(_), type text}, {"FactorGroup", each if _ = null or _ = "" then null else Text.From(_), type text}, {"Rating", each if _ = null or _ = "" then null else Int64.From(Number.FromText(_, "en-US")), Int64.Type}})
+				in
+					Typed
+
+	annotation PBI_ResultType = Table
+
